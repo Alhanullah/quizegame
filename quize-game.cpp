@@ -7,6 +7,9 @@
 
 using namespace std;
 
+const string USER_DATA_FILE_PATH = "game_file.txt";
+
+
 class Login
 {
 private:
@@ -60,7 +63,7 @@ start:
         cout << "\n\t\tEnter Minimum 6 digit password." << endl;
         goto start;
     }
-    ofstream outfile("D:/Login.txt", ios::app);
+    ofstream outfile(USER_DATA_FILE_PATH, ios::app);
     if (!outfile)
     {
         cout << "\t\tFile can not open!" << endl;
@@ -85,7 +88,7 @@ void login()
     cout << "\t\tEnter Password: ";
     cin >> pass;
 
-    ifstream infile("D:/Login.txt");
+    ifstream infile(USER_DATA_FILE_PATH);
 
     if (!infile)
     {
