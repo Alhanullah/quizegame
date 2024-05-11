@@ -13,14 +13,14 @@ const string USER_DATA_FILE_PATH = "game_file.txt";
 class Login
 {
 private:
-    string loginId, password;
+    string loginNmae, password;
 
 public:
-    Login() : loginId(" "), password(" ") {}
+    Login() : loginNmae(" "), password(" ") {}
 
-    void setId(string id)
+    void setId(string name)
     {
-        loginId = id;
+        loginNmae = name;
     }
 
     void setPass(string Pass)
@@ -30,7 +30,7 @@ public:
 
     string getId()
     {
-        return loginId;
+        return loginNmae;
     }
 
     string getPass()
@@ -46,11 +46,13 @@ void registration(Login& log) // Pass by reference
 {
     system("cls");
 
-    string id, pass;
-    cout << "\t\tEnter Login ID: ";
-    cin >> id;
-    log.setId(id);
+    string name, pass;
+    cout << "\t\tEnter User name: ";
+    cin >> name;
+    log.setId(name);
 
+
+//using start as goto stateneb
 start:
     cout << "\t\tEnter a strong password: ";
     cin >> pass;
@@ -81,9 +83,9 @@ void login()
 {
     system("cls");
 
-    string id, pass;
-    cout << "\t\tEnter Login Id: ";
-    cin >> id;
+    string name, pass;
+    cout << "\t\tEnter User Name: ";
+    cin >> name;
 
     cout << "\t\tEnter Password: ";
     cin >> pass;
@@ -101,7 +103,7 @@ void login()
 
         while (infile >> userId >> userPass)
         {
-            if (id == userId && pass == userPass)
+            if (name == userId && pass == userPass)
             {
                 found = true;
                 cout << "\t\tPlease Wait";
@@ -112,13 +114,13 @@ void login()
                 }
                 system("cls");
                 cout << "\t******************************************************\t" << endl;
-                cout << "\t\tWelcome to the Quiz Game of Group 4" << endl;
+                cout << "\t\t"<< userId << "Welcome to the Quiz Game of Group 4" << endl;
                 cout << "\t******************************************************\t" << endl;
+                //Sleep(3000);
                 int op;
                 bool exit = false;
                 while (!exit)
                 {
-                    system("cls");
                     cout << "\t\t1.play game" << endl;
                     cout << "\t\t2.Exit" << endl;
                     cout << "\t\tEnter choice: ";
@@ -131,6 +133,7 @@ void login()
                     {
                         exit = true;
                     }
+                    system("cls");
                 }
             }
         }
