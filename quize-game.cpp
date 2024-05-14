@@ -42,6 +42,7 @@ void game();
 
 void easyMath()
 {
+    system("cls");
     int ans[5], skipCount = 0, ansCount = 0, correctAns = 0;
     int answer[5] = {1600, 779, 69, 120, 121};
     string ques[5] = {
@@ -100,16 +101,8 @@ tryagain:
              << endl;
     }
 
-    cout << "Press 1 to play again" << endl;
-    int playAgain;
-    if (playAgain == 1)
-    {
-        goto tryagain;
-    }
-    else
-    {
-        cout << "invalid input!!" << endl;
-    }
+    system("pause");
+
 }
 
 void mediumMath()
@@ -334,58 +327,6 @@ void login()
 
 void game()
 {
-    //     string questions[] = {"1. What is 2+2 ?",
-    //                           "2. What is 2+3 ?",
-    //                           "3. What is 2+1 ?",
-    //                           "4. What is 2+4 ?",
-    //                           "5. What is 2+5 ?"};
-
-    //     string options[][4] = {
-    //         {"a. 4 ", "b. 1 ", "c. 0 ", "d. 5 "},
-    //         {"a. 4 ", "b. 1 ", "c. 3 ", "d. 5 "},
-    //         {"a. 3 ", "b. 1 ", "c. 0 ", "d. 5 "},
-    //         {"a. 4 ", "b. 1 ", "c. 6 ", "d. 5 "},
-    //         {"a. 4 ", "b. 7 ", "c. 0 ", "d. 5 "}};
-
-    //     char answerKey[] = {'a', 'd', 'a', 'c', 'b'};
-
-    //     int qSize = sizeof(questions) / sizeof(questions[0]);
-    //     char guess;    // Corrected variable name
-    //     int score = 0; // Initialize score
-
-    //     for (int i = 0; i < qSize; i++)
-    //     {
-    //         cout << "**********************************" << endl;
-    //         cout << questions[i] << endl;
-    //         cout << "**********************************" << endl;
-
-    //         for (int j = 0; j < sizeof(options[i]) / sizeof(options[i][j]); j++)
-    //         {
-    //             cout << options[i][j] << endl;
-    //         }
-
-    //         cin >> guess;
-
-    //         if (guess == answerKey[i])
-    //         {
-    //             cout << "Correct" << endl;
-    //             score++;
-    //         }
-    //         else
-    //         {
-    //             cout << "Wrong" << endl;
-    //             cout << "Correct Answer: " << answerKey[i] << endl;
-    //         }
-    //     }
-
-    //     cout << "**********************************" << endl;
-    //     cout << "*              Result            *" << endl;
-    //     cout << "**********************************" << endl;
-    //     cout << "Correct Answers: " << score << endl;
-    //     cout << "Number of questions: " << qSize << endl;
-    //     cout << "Result: " << (score / (double)qSize) * 100 << " % " << endl;
-    //     Sleep(5000);
-
     bool exit = false;
     while (!exit)
     {
@@ -393,12 +334,13 @@ void game()
         char ch;
 
     lvl:
+        system("cls");
         cout << "Choose your level of playing the game!!" << endl;
-        cout << "1)Easy \n 2)Medium \n 3)Hard \n 4)Exit" << endl;
+        cout << "\t1)Easy \n\t 2)Medium \n 3)Hard \n\t 4)Main menu" << endl;
         cin >> level;
         if (level == 1)
         {
-            cout << "---------------------- Easy Level Quiz ----------------------" << endl;
+            cout << "---------------------- Easy Level Quiz ----------------------" << endl; 
             easyMath();
         }
         else if (level == 2)
@@ -415,8 +357,7 @@ void game()
         {
             system("cls");
             exit = true;
-            cout << "\t\tGood Bye. Hope you enjoyed it!" << endl;
-            Sleep(3000);
+            Sleep(2000);
         }
         else
         {
@@ -424,46 +365,9 @@ void game()
             goto lvl;
         }
 
-        // switch (level)
-        // {
-        // case 1:
-        //    cout << "---------------------- Easy Level Quiz ----------------------" << endl;
-        //    easyMath();
-        //    break;
-
-        // case 2:
-        //     cout << "---------------------- Medium Level Quiz ----------------------" << endl;
-        //     mediumMath();
-        //     break;
-
-        // case 3:
-        //     cout << "---------------------- Hard Level Quiz ----------------------" << endl;
-        //     hardMath();
-        //     break;
-        // case 4:
-        //                system("cls");
-        //         exit = true;
-        //         cout << "\t\tGood Bye. Hope you enjoyed it!" << endl;
-        //         Sleep(3000);
-
-        // default:
-        //     cout << "You have entered an invalid input. Please choose again!!" << endl;
-        //     goto lvl;
-        //     break;
-        // }
         cout << endl;
 
-        // cout << "Do you wanna play again?\nInput y for yes and n for no." << endl;
-        // cin >> ch;
-        // if (ch == 'y' || ch == 'Y')
-        // {
-        //     goto lvl;
-        // }
-        // else
-        // {
-        //     cout << "\n\n-----------!!Come later again to play!!-----------\n\n";
-        //     Sleep(2000);
-        // }
+
     }
 }
 
