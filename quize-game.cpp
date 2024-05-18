@@ -2,11 +2,18 @@
 #include <fstream>
 #include <windows.h>
 #include <sstream>
+#include <cstdlib>
 
 using namespace std;
 
 const string USER_DATA_FILE_PATH = "game_file.txt";
 const string Highest_score_data = "Highest.txt";
+
+void exitProgram(int status)
+{
+    cout << "Exiting the Program" << status << endl;
+    exit(status);
+}
 
 class Login
 {
@@ -44,13 +51,13 @@ void easyMath()
 {
     system("cls");
     int ans[5], skipCount = 0, ansCount = 0, correctAns = 0;
-    int answer[5] = {1600, 779, 69, 120, 121};
+    int answer[5] = {1600, 779, 69, 1010, 121};
     string ques[5] = {
         "Q1) 40x40=___?", "Q2) 999-33-87-100=___?", "Q3) What is 22+47?",
-        "Q4) To stay in a hotel costs $40 per night. You stay for three nights and check out on the fourth morning. How much will you pay?", "Q5) 120+240+400-240-400+1=___?"};
+        "Q4) 100*10+(20-10)=___?", "Q5) 120+240+400-240-400+1=___?"};
 
-    cout << "\n**************** Welcome To Level Easy ****************" << endl;
-    cout << ":::::: Instructions ::::::" << endl;
+    cout << "\n**************** Welcome To Math Quize ****************" << endl;
+    cout << "\t\t:::::: Instructions ::::::" << endl;
     cout << "Enter your asnwers after the questions asked\nYou may skip questions by entering 0." << endl;
 
 tryagain:
@@ -102,85 +109,28 @@ tryagain:
     }
 
     system("pause");
-
 }
 
 void mediumMath()
 {
-    int ans[5], skipCount = 0, ansCount = 0, correctAns = 0;
-    int answer[5] = {10, 2, 20, -989, 750};
-    string ques[5] = {
-        "Q1) What is 10% of 100?", "Q2) If a train leaves a station at 10 p.m., travels at 30 miles per hour and covers 120 miles, what would the time(in a.m.) be?", "Q3) What is 180/9?",
-        "Q4) Subtract 999 from 10. What do you have?", "Q5) If I have a liter bottle of cola and I drink 250 ml's, how much is left?"};
-
-    cout << "\n**************** Welcome To Level Medium ****************" << endl;
-    cout << ":::::: Instructions ::::::" << endl;
-    cout << "Enter your asnwers after the questions asked\nYou may skip questions by entering 0." << endl;
-
-tryagain:
-    for (int i = 0; i < 5; i++)
-    {
-        cout << ques[i] << endl;
-        cin >> ans[i];
-        if (ans[i] != 0)
-        {
-            ansCount++;
-            if (ans[i] == answer[i])
-            {
-                correctAns++;
-                cout << "Correct Answer!" << endl;
-            }
-            else
-            {
-                cout << "Wrong Answer!" << endl;
-                cout << "Answer = " << answer[i] << endl;
-            }
-        }
-        else
-        {
-            skipCount++;
-            cout << "Answer = " << answer[i] << endl;
-        }
-    }
-    if (correctAns >= 3)
-    {
-        cout << "       Congratulations! You have completed this level.\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions." << endl;
-    }
-    else
-    {
-        cout << "       You Failed! Try again!!!\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions." << endl;
-        goto tryagain;
-    }
-}
-
-void hardMath()
-{
+    system("cls");
+    string ans[5];
     int skipCount = 0, ansCount = 0, correctAns = 0;
-    double ans[5], answer[5] = {24, 2000, 2, 464.01, 5};
+    string answer[5] = {"camel", "26", "lion", "dhaka", "7"};
     string ques[5] = {
-        "Q1) How many right angles does a cube have?", "Q2) 3,000-800+400-1200+600=___?", "Q3) If a skipping rope is 2 meters long, how many 100-cm pieces could I cut it into?",
-        "Q4) Add the following, please: 90+33+0.01+100+241=___?", "Q5) A man must take a pill every half an hour. He starts at 10 a.m. How many pills will he have taken by 12:01 p.m.?"};
+        "Q1) Which animal is known as the 'Ship of the Desert'?", "Q2) How many letters are there in the English alphabet", "Q3) Which animal is known as the king of the jungle",
+        "Q4) What is the capital of Bangladesh?", "Q5) How many continents are there in the world?"};
 
-    cout << "\n**************** Welcome To Level Hard ****************" << endl;
-    cout << ":::::: Instructions ::::::" << endl;
-    cout << "Enter your answers after the questions asked\nYou may skip questions by entering 0." << endl;
+    cout << "\n**************** Welcome To Genarall Knowledge ****************" << endl;
+    cout << "\t\t:::::: Instructions ::::::" << endl;
+    cout << "Enter your asnwers after the questions asked, Answere the questions in small latter.\nYou may skip questions by entering 0." << endl;
 
 tryagain:
     for (int i = 0; i < 5; i++)
     {
         cout << ques[i] << endl;
         cin >> ans[i];
-        if (ans[i] != 0)
+        if (ans[i] != "0")
         {
             ansCount++;
             if (ans[i] == answer[i])
@@ -202,15 +152,18 @@ tryagain:
     }
     if (correctAns >= 3)
     {
+        system("cls");
         cout << "       Congratulations! You have completed this level.\n"
              << endl;
         cout << "Total no. of questions asked = 5." << endl;
         cout << "You have answered " << correctAns << " correctly!" << endl;
         cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions." << endl;
+        cout << "You have skipped " << skipCount << " questions.\n"
+             << endl;
     }
     else
     {
+        system("cls");
         cout << "       You Failed! Try again!!!\n"
              << endl;
         cout << "Total no. of questions asked = 5." << endl;
@@ -218,8 +171,9 @@ tryagain:
         cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
         cout << "You have skipped " << skipCount << " questions.\n"
              << endl;
-        goto tryagain;
     }
+
+    system("pause");
 }
 
 void registration(Login &log) // Pass by reference
@@ -227,7 +181,10 @@ void registration(Login &log) // Pass by reference
     system("cls");
 
     string name, pass;
-    cout << "\t\tEnter User name: ";
+    cout << "\t******************************************************" << endl;
+    cout << "\t******************** Registration ********************" << endl;
+
+    cout << "\n\n\t\tEnter User name: ";
     cin >> name;
     log.setId(name);
 
@@ -252,10 +209,19 @@ start:
     else
     {
         outfile << log.getId() << " " << log.getPass() << endl;
-        cout << "\t\tUser Registered Successfully" << endl;
+        cout << "\t\tRegistration is on prosess";
+        for (int i = 0; i < 3; i++)
+        {
+            Sleep(1000);
+            cout << ".";
+        }
     }
+    system("cls");
     outfile.close();
-    Sleep(3000);
+    cout << "\t******************************************************" << endl;
+    cout << "\t\tUser Registered Successfully\n\n\n";
+    cout << "\t******************************************************" << endl;
+    system("pause");
 }
 
 void login()
@@ -263,7 +229,10 @@ void login()
     system("cls");
 
     string name, pass;
-    cout << "\t\tEnter User Name: ";
+    cout << "\t******************************************************" << endl;
+    cout << "\t*********************** Log in ***********************" << endl;
+
+    cout << "\n\t\tEnter User Name: ";
     cin >> name;
 
     cout << "\t\tEnter Password: ";
@@ -298,23 +267,29 @@ void login()
                 // Sleep(3000);
                 int op;
                 bool exit = false;
-                while (!exit)
+                bool shouldexit = true;
+                cout << "\t\t1.play game" << endl;
+                cout << "\t\t2.Exit" << endl;
+                cout << "\t\tEnter choice: ";
+                cin >> op; // Capture the user's choice
+                if (op == 1)
                 {
-                    cout << "\t\t1.play game" << endl;
-                    cout << "\t\t2.Exit" << endl;
-                    cout << "\t\tEnter choice: ";
-                    cin >> op; // Capture the user's choice
-                    if (op == 1)
-                    {
-                        system("cls");
-                        game(); // Call the game function
-                    }
-                    else if (op == 2)
-                    {
-                        exit = true;
-                    }
                     system("cls");
+                    game(); // Call the game function
                 }
+                else if (op == 2)
+                {
+                    system("cls");
+                    Sleep(300);
+                    cout << "Please Wait";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cout << ".";
+                        Sleep(300);
+                    }
+                    return;
+                }
+                system("cls");
             }
         }
         if (!found)
@@ -335,29 +310,51 @@ void game()
 
     lvl:
         system("cls");
-        cout << "Choose your level of playing the game!!" << endl;
-        cout << "\t1)Easy \n\t 2)Medium \n 3)Hard \n\t 4)Main menu" << endl;
+        cout << "\t\t************************************************************************" << endl;
+        cout << "\t\t**********  Choose your level of playing the game!!  *******************" << endl;
+        cout << "\t\t************************************************************************" << endl;
+        cout << "\n\t1)Easy \n\n\t 2)Medium \n\n\t 3)Main menu\n"
+             << endl;
         cin >> level;
         if (level == 1)
         {
-            cout << "---------------------- Easy Level Quiz ----------------------" << endl; 
+            cout << "************************************************************************" << endl;
+            cout << "************************ Easy Level Quiz ************************" << endl;
+            cout << "************************************************************************" << endl;
+            Sleep(400);
+            cout << "Please Wait";
+            for (int i = 0; i < 3; i++)
+            {
+                cout << ".";
+                Sleep(400);
+            }
             easyMath();
         }
         else if (level == 2)
         {
-            cout << "---------------------- Medium Level Quiz ----------------------" << endl;
+            cout << "************************************************************************" << endl;
+            cout << "************************ Medium Level Quiz ************************" << endl;
+            cout << "************************************************************************" << endl;
+            Sleep(400);
+            cout << "Please Wait";
+            for (int i = 0; i < 3; i++)
+            {
+                cout << ".";
+                Sleep(400);
+            }
             mediumMath();
         }
         else if (level == 3)
         {
-            cout << "---------------------- Hard Level Quiz ----------------------" << endl;
-            hardMath();
-        }
-        else if (level == 4)
-        {
             system("cls");
+            Sleep(400);
+            cout << "Returning to Main menu";
+            for (int i = 0; i < 3; i++)
+            {
+                cout << ".";
+                Sleep(400);
+            }
             exit = true;
-            Sleep(2000);
         }
         else
         {
@@ -366,8 +363,6 @@ void game()
         }
 
         cout << endl;
-
-
     }
 }
 
@@ -392,7 +387,8 @@ int main()
         // convert now to string form
         char *dt = ctime(&now);
 
-        cout << "\nLocal Date and Time: " << dt << endl
+        cout << "\t******************************************************" << endl;
+        cout << "\t      Local Date and Time: " << dt << endl
              << endl;
 
         int val;
@@ -420,8 +416,6 @@ int main()
             cout << "\t\tGood Bye. Hope you enjoyed it!" << endl;
             Sleep(3000);
         }
-
-        Sleep(3000);
     }
 
     return 0;
