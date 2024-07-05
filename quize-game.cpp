@@ -1,206 +1,314 @@
-#include <bits\stdc++.h>
-#include <fstream>
+#include <bits/stdc++.h>
 #include <windows.h>
+#include <fstream>
 #include <sstream>
-#include <cstdlib>
-
+#include <ctime>
 using namespace std;
 
 const string USER_DATA_FILE_PATH = "game_file.txt";
-const string Highest_score_data = "Highest.txt";
+const string HIGHEST_SCORE_FILE_PATH = "Highest.txt";
 
-void exitProgram(int status)
-{
-    cout << "Exiting the Program" << status << endl;
-    exit(status);
-}
 
 class Login
 {
 private:
-    string loginNmae, password;
+    string loginName, password;
 
 public:
-    Login() : loginNmae(" "), password(" ") {}
+    Login() : loginName(" "), password(" ") {}
 
-    void setId(string name)
+    void setId(const string &name)
     {
-        loginNmae = name;
+        loginName = name;
     }
 
-    void setPass(string Pass)
+    void setPass(const string &Pass)
     {
         password = Pass;
     }
 
-    string getId()
+    string getId() const
     {
-        return loginNmae;
+        return loginName;
     }
 
-    string getPass()
+    string getPass() const
     {
         return password;
     }
 };
 
-// Forward declaration of the game function
-void game();
+void shuffleQuestions(vector<tuple<string, vector<string>, char>> &questions)
+{
+    srand(time(0)); // Seed the random number generator with the current time
+    for (size_t i = 0; i < questions.size(); ++i)
+    {
+        size_t j = i + rand() % (questions.size() - i);
+        swap(questions[i], questions[j]);
+    }
+}
 
-void easyMath()
+
+void loginInterface(const string &userId)
 {
     system("cls");
-    int ans[5], skipCount = 0, ansCount = 0, correctAns = 0;
-    int answer[5] = {1600, 779, 69, 1010, 121};
-    string ques[5] = {
-        "Q1) 40x40=___?", "Q2) 999-33-87-100=___?", "Q3) What is 22+47?",
-        "Q4) 100*10+(20-10)=___?", "Q5) 120+240+400-240-400+1=___?"};
+    cout << "\t******************************************************\t" << endl;
+    cout << "\t\t" << userId << "\t" << "Welcome to the Quiz Game of Group 4" << endl;
+    cout << "\t******************************************************\t" << endl;
+    cout << "\t\t1. Play game" << endl;
+    cout << "\t\t2. Exit" << endl;
+}
 
-    cout << "\n**************** Welcome To Math Quize ****************" << endl;
+void game(const string &userName);
+int highestScore(int newScore, const string &userName);
+void displayHighestScores();
+void login();
+
+int level1()
+{
+    system("cls");
+    vector<tuple<string, vector<string>, char>> questions = {
+        {"Question: What is the result of 40x40?", {"A) 1600", "B) 800", "C) 400", "D) 200"}, 'A'},
+        {"Question: What is the result of 999 - 33 - 87 - 100?", {"A) 759", "B) 789", "C) 769", "D) 779"}, 'B'},
+        {"Question: What is the result of 22 + 47?", {"A) 89", "B) 77", "C) 69", "D) 91"}, 'C'},
+        {"Question: What is the result of 100 * 10 + (20 - 10)?", {"A) 1010", "B) 1000", "C) 1100", "D) 1200"}, 'A'},
+        {"Question: What is the result of 120 + 240 + 400 - 240 - 400 + 1?", {"A) 120", "B) 241", "C) 361", "D) 121"}, 'D'},
+        {"Question: 50 times of 8 is equal to", {"A) 80", "B) 400", "C) 800", "D) 4000"}, 'B'},
+        {"Question: 20+(90÷2) is equal to:", {"A) 50", "B) 55", "C) 65", "D) 75"}, 'C'},
+        {"Question: Find the missing terms in multiple of 3: 3, 6, 9, __, 15", {"A) 27", "B) 9", "C) 12", "D) 26"}, 'C'},
+        {"Question: What is the next prime number after 5?", {"A) 6", "B) 7", "C) 8", "D) 9"}, 'B'},
+        {"Question: If we minus 712 from 1500, how much do we get?", {"A) 788", "B) 778", "C) 800", "D) 400"}, 'A'}};
+
+    shuffleQuestions(questions); // Shuffle the questions
+
+    int correctAns = 0, wrongAns = 0;
+
+    cout << "\n\t**************** Welcome To Math Quiz ****************" << endl;
     cout << "\t\t:::::: Instructions ::::::" << endl;
-    cout << "Enter your asnwers after the questions asked\nYou may skip questions by entering 0." << endl;
+    cout << "\n\tEnter your answers after the questions asked\n\tYou may skip questions by entering 0." << endl;
 
-tryagain:
-    for (int i = 0; i < 5; i++)
+    for (const auto &q : questions)
     {
-        cout << ques[i] << endl;
-        cin >> ans[i];
-        if (ans[i] != 0)
+        string question = get<0>(q);
+        vector<string> options = get<1>(q);
+        char correctOption = get<2>(q);
+
+        cout << "\n\t" << question << endl;
+        for (const auto &option : options)
         {
-            ansCount++;
-            if (ans[i] == answer[i])
+            cout << "\t" << option << endl;
+        }
+
+        char userAnswer;
+        cout<<"\t Ans: ";
+        cin >> userAnswer;
+        userAnswer = toupper(userAnswer);
+
+        if (userAnswer != '0')
+        {
+            if (userAnswer == correctOption)
             {
                 correctAns++;
-                cout << "Correct Answer!" << endl;
+                cout << "\tCorrect Answer!" << endl;
             }
             else
             {
-                cout << "Wrong Answer!" << endl;
-                cout << "Answer = " << answer[i] << endl;
+                wrongAns++;
+                cout << "\tWrong Answer!" << endl;
+                cout << "\tCorrect Answer: Option " << correctOption << endl;
             }
         }
         else
         {
-            skipCount++;
-            cout << "Answer = " << answer[i] << endl;
+            cout << "\tSkipped! Correct Answer: Option " << correctOption << endl;
         }
     }
-    if (correctAns >= 3)
-    {
-        system("cls");
-        cout << "       Congratulations! You have completed this level.\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions.\n"
-             << endl;
-    }
-    else
-    {
-        system("cls");
-        cout << "       You Failed! Try again!!!\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions.\n"
-             << endl;
-    }
 
-    system("pause");
+    system("cls");
+    cout << "\tTotal no. of questions asked = " << questions.size() << endl;
+    cout << "\tYou have answered " << correctAns << " correctly!" << endl;
+    cout << "\tYou have given " << wrongAns << " wrong answers." << endl;
+    cout<<"\t\n";system("pause");
+
+    return correctAns;
 }
 
-void mediumMath()
+int level2()
 {
     system("cls");
-    string ans[5];
-    int skipCount = 0, ansCount = 0, correctAns = 0;
-    string answer[5] = {"camel", "26", "lion", "dhaka", "7"};
-    string ques[5] = {
-        "Q1) Which animal is known as the 'Ship of the Desert'?", "Q2) How many letters are there in the English alphabet", "Q3) Which animal is known as the king of the jungle",
-        "Q4) What is the capital of Bangladesh?", "Q5) How many continents are there in the world?"};
+    vector<tuple<string, vector<string>, char>> questions = {
+        {"Bangladesh shares land borders with only two nations. Which among the following are those two nations?", {"A) India and Bhutan", "B) India and china", "C) India and Myanmar", "D) India and Nepal"}, 'C'},
+        {"In which year Bangladesh got independence from Pakistan?", {"A) 1956", "B) 1971", "C) 1970", "D) 1969"}, 'B'},
+        {"The Port of Chittagong is the seaport of which one of the following nations?", {"A) India", "B) Iran", "C) Bangladesh", "D) Bhutan"}, 'C'},
+        {"Question: What is the capital of France?", {"A) Berlin", "B) Madrid", "C) Paris", "D) Rome"}, 'C'},
+        {"Question: Who wrote 'Hamlet'?", {"A) Charles Dickens", "B) J.K. Rowling", "C) William Shakespeare", "D) Mark Twain"}, 'C'},
+        {"Question: What is the largest planet in our Solar System?", {"A) Earth", "B) Jupiter", "C) Saturn", "D) Mars"}, 'B'},
+        {"Question: Which element has the chemical symbol 'O'?", {"A) Gold", "B) Silver", "C) Oxygen", "D) Hydrogen"}, 'C'},
+        {"Question: In which year did the Titanic sink?", {"A) 1912", "B) 1905", "C) 1920", "D) 1898"}, 'A'},
+        {"Question: What is the smallest country in the world by land area?", {"A) Monaco", "B) Vatican City", "C) Nauru", "D) San Marino"}, 'B'},
+        {"Question: Who painted the Mona Lisa?", {"A) Vincent van Gogh", "B) Pablo Picasso", "C) Leonardo da Vinci", "D) Claude Monet"}, 'C'}};
 
-    cout << "\n**************** Welcome To Genarall Knowledge ****************" << endl;
+    shuffleQuestions(questions); // Shuffle the questions
+
+    int correctAns = 0, wrongAns = 0;
+
+    cout << "\n\t**************** Welcome To GK Quiz ****************" << endl;
     cout << "\t\t:::::: Instructions ::::::" << endl;
-    cout << "Enter your asnwers after the questions asked, Answere the questions in small latter.\nYou may skip questions by entering 0." << endl;
+    cout << "\n\tEnter your answers after the questions asked\n\tYou may skip questions by entering 0." << endl;
 
-tryagain:
-    for (int i = 0; i < 5; i++)
+    for (const auto &q : questions)
     {
-        cout << ques[i] << endl;
-        cin >> ans[i];
-        if (ans[i] != "0")
+        string question = get<0>(q);
+        vector<string> options = get<1>(q);
+        char correctOption = get<2>(q);
+
+        cout << "\n\t" << question << endl;
+        for (const auto &option : options)
         {
-            ansCount++;
-            if (ans[i] == answer[i])
+            cout << "\t" << option << endl;
+        }
+
+        char userAnswer;
+        cout<<"\t Ans: ";
+        cin >> userAnswer;
+        userAnswer = toupper(userAnswer);
+
+        if (userAnswer != '0')
+        {
+            if (userAnswer == correctOption)
             {
                 correctAns++;
-                cout << "Correct Answer!" << endl;
+                cout << "\tCorrect Answer!" << endl;
             }
             else
             {
-                cout << "Wrong Answer!" << endl;
-                cout << "Answer = " << answer[i] << endl;
+                wrongAns++;
+                cout << "\tWrong Answer!" << endl;
+                cout << "\tCorrect Answer: Option " << correctOption << endl;
             }
         }
         else
         {
-            skipCount++;
-            cout << "Answer = " << answer[i] << endl;
+            cout << "\tSkipped! Correct Answer: Option " << correctOption << endl;
         }
     }
-    if (correctAns >= 3)
-    {
-        system("cls");
-        cout << "       Congratulations! You have completed this level.\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions.\n"
-             << endl;
-    }
-    else
-    {
-        system("cls");
-        cout << "       You Failed! Try again!!!\n"
-             << endl;
-        cout << "Total no. of questions asked = 5." << endl;
-        cout << "You have answered " << correctAns << " correctly!" << endl;
-        cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
-        cout << "You have skipped " << skipCount << " questions.\n"
-             << endl;
-    }
 
-    system("pause");
+    system("cls");
+    cout << "\tTotal no. of questions asked = " << questions.size() << endl;
+    cout << "\tYou have answered " << correctAns << " correctly!" << endl;
+    cout << "\tYou have given " << wrongAns << " wrong answers." << endl;
+    cout<<"\t\n";system("pause");
+
+    return correctAns;
 }
 
-void registration(Login &log) // Pass by reference
+int level3()
+{
+    system("cls");
+    vector<tuple<string, vector<string>, char>> questions = {
+        {"Question: Who is known as the father of C++?", {"A) Bjarne Stroustrup", "B) James Gosling", "C) Dennis Ritchie", "D) Guido van Rossum"}, 'A'},
+        {"Question: Which of the following is the correct syntax to print a message in C++?", {"A) Console.WriteLine('Hello World');", "B) printf('Hello World');", "C) cout << 'Hello World';", "D) print('Hello World');"}, 'C'},
+        {"Question: Which of the following is not a C++ keyword?", {"A) private", "B) public", "C) protected", "D) integer"}, 'D'},
+        {"Question: What is the output of the following code? \n int main() { int x = 5; cout << x++; return 0; }", {"A) 5", "B) 6", "C) Error", "D) 4"}, 'A'},
+        {"Question: Which operator is used to access the members of a class in C++?", {"A) . (dot)", "B) -> (arrow)", "C) :: (scope resolution)", "D) # (hash)"}, 'B'},
+        {"Question: Which of the following correctly describes the use of pointers in C++?", {"A) Pointers store the address of other variables", "B) Pointers store the value of other variables", "C) Pointers are used to store large data types", "D) Pointers are used to store boolean values"}, 'A'},
+        {"Question: What is the correct syntax for a for loop in C++?", {"A) for (int i = 0; i < 10; i++) {}", "B) for (int i = 0; i < 10) {}", "C) for i in range(0, 10) {}", "D) for (i = 0; i < 10; i++) {}"}, 'A'},
+        {"Question: What does the 'new' keyword do in C++?", {"A) It creates a new variable", "B) It allocates memory on the stack", "C) It allocates memory on the heap", "D) It initializes a variable to zero"}, 'C'},
+        {"Question: Which of the following is used to define a constant in C++?", {"A) #define", "B) const", "C) final", "D) static"}, 'B'}
+        };
+
+    shuffleQuestions(questions); // Shuffle the questions
+
+    int correctAns = 0, wrongAns = 0;
+
+    cout << "\n\t**************** Welcome To C++ Quiz ****************" << endl;
+    cout << "\t\t:::::: Instructions ::::::" << endl;
+    cout << "\n\tEnter your answers after the questions asked\n\tYou may skip questions by entering 0." << endl;
+
+    for (const auto &q : questions)
+    {
+        string question = get<0>(q);
+        vector<string> options = get<1>(q);
+        char correctOption = get<2>(q);
+
+        cout << "\n\t" << question << endl;
+        for (const auto &option : options)
+        {
+            cout << "\t" << option << endl;
+        }
+
+        char userAnswer;
+        cout<<"\t Ans: ";
+        cin >> userAnswer;
+        userAnswer = toupper(userAnswer);
+
+        if (userAnswer != '0')
+        {
+            if (userAnswer == correctOption)
+            {
+                correctAns++;
+                cout << "\tCorrect Answer!" << endl;
+            }
+            else
+            {
+                wrongAns++;
+                cout << "\tWrong Answer!" << endl;
+                cout << "\tCorrect Answer: Option " << correctOption << endl;
+            }
+        }
+        else
+        {
+            cout << "\tSkipped! Correct Answer: Option " << correctOption << endl;
+        }
+    }
+
+    system("cls");
+    cout << "\tTotal no. of questions asked = " << questions.size() << endl;
+    cout << "\tYou have answered " << correctAns << " correctly!" << endl;
+    cout << "\tYou have given " << wrongAns << " wrong answers." << endl;
+    cout<<"\t\n";system("pause");
+
+    return correctAns;
+}
+
+void registration(Login &log)
 {
     system("cls");
 
     string name, pass;
     cout << "\t******************************************************" << endl;
     cout << "\t******************** Registration ********************" << endl;
+    char op ;
+    cout<<"\n\tAlready Registared? Press Y to logIn N to Registar"<<endl;
+    cin>>op;
+    if(op == 'y')
+    {
+        login();
+        return;
+    }
+    system("cls");
 
+    cout << "\t******************************************************" << endl;
+    cout << "\t******************** Registration ********************" << endl;
     cout << "\n\n\t\tEnter User name: ";
     cin >> name;
     log.setId(name);
 
-// using start as goto stateneb
-start:
-    cout << "\t\tEnter a strong password: ";
-    cin >> pass;
-    if (pass.length() >= 6)
+    while (true)
     {
-        log.setPass(pass);
+        cout << "\t\tEnter a strong password: ";
+        cin >> pass;
+        if (pass.length() >= 6)
+        {
+            log.setPass(pass);
+            break;
+        }
+        else
+        {
+            cout << "\n\t\tEnter Minimum 6 digit password." << endl;
+        }
     }
-    else
-    {
-        cout << "\n\t\tEnter Minimum 6 digit password." << endl;
-        goto start;
-    }
+
     ofstream outfile(USER_DATA_FILE_PATH, ios::app);
     if (!outfile)
     {
@@ -209,198 +317,278 @@ start:
     else
     {
         outfile << log.getId() << " " << log.getPass() << endl;
-        cout << "\t\tRegistration is on prosess";
+        cout << "\t\tRegistration is in process";
         for (int i = 0; i < 3; i++)
         {
             Sleep(1000);
             cout << ".";
         }
     }
-    system("cls");
+
     outfile.close();
+    system("cls");
     cout << "\t******************************************************" << endl;
     cout << "\t\tUser Registered Successfully\n\n\n";
     cout << "\t******************************************************" << endl;
     system("pause");
 }
 
+void game(const string &userName)
+{
+    bool exit = false;
+    while (!exit)
+    {
+        int score = 0;
+
+        score += level1();
+        if (score >= 5)
+        {
+            system("cls");
+            cout << "\t******************************************************" << endl;
+            cout << "\t******* Congratulations You have passed The math quiz ******" << endl;
+            system("pause");
+            score += level2();
+        }
+        if (score >= 10)
+        {
+            system("cls");
+            cout << "\t******************************************************" << endl;
+            cout << "\t******* Congratulations You have passed GK quiz ******" << endl;
+            system("pause");
+            score += level3();
+        }
+
+
+        char choice;
+        system("cls");
+        cout << "\t******************************************************" << endl;
+        cout<< "\tHurreh!! You have completed the quize game with a score: "<<score<<endl;
+        cout << "\n\t\tDo you want to play again? (Y/N): ";
+        cin >> choice;
+        choice = toupper(choice);
+
+        if (choice != 'Y')
+        {
+            exit = true;
+        }
+
+        highestScore(score, userName);
+    }
+}
+
 void login()
 {
-    system("cls");
-
-    string name, pass;
-    cout << "\t******************************************************" << endl;
-    cout << "\t*********************** Log in ***********************" << endl;
-
-    cout << "\n\t\tEnter User Name: ";
-    cin >> name;
-
-    cout << "\t\tEnter Password: ";
-    cin >> pass;
-
-    ifstream infile(USER_DATA_FILE_PATH);
-
-    if (!infile)
+    bool retry = true;
+    while (retry)
     {
-        cout << "\t\tError: File can't open!" << endl;
-    }
-    else
-    {
-        string userId, userPass;
-        bool found = false;
+        system("cls");
 
-        while (infile >> userId >> userPass)
+        string name, pass;
+        cout << "\t******************************************************" << endl;
+        cout << "\t*********************** Log in ***********************" << endl;
+
+        cout << "\n\t\tEnter User Name: ";
+        cin >> name;
+
+        cout << "\t\tEnter Password: ";
+        cin >> pass;
+
+        ifstream infile(USER_DATA_FILE_PATH);
+
+        if (!infile)
         {
-            if (name == userId && pass == userPass)
+            cout << "\t\tError: File can't open!" << endl;
+            return;
+        }
+        else
+        {
+            string userId, userPass;
+            bool found = false;
+
+            while (infile >> userId >> userPass)
             {
-                found = true;
-                cout << "\t\tPlease Wait";
-                for (int i = 0; i < 3; i++)
+                if (name == userId && pass == userPass)
                 {
-                    cout << ".";
-                    Sleep(300);
-                }
-                system("cls");
-                cout << "\t******************************************************\t" << endl;
-                cout << "\t\t" << userId << "Welcome to the Quiz Game of Group 4" << endl;
-                cout << "\t******************************************************\t" << endl;
-                // Sleep(3000);
-                int op;
-                bool exit = false;
-                bool shouldexit = true;
-                cout << "\t\t1.play game" << endl;
-                cout << "\t\t2.Exit" << endl;
-                cout << "\t\tEnter choice: ";
-                cin >> op; // Capture the user's choice
-                if (op == 1)
-                {
-                    system("cls");
-                    game(); // Call the game function
-                }
-                else if (op == 2)
-                {
-                    system("cls");
-                    Sleep(300);
-                    cout << "Please Wait";
+                    found = true;
+                    cout << "\t\tPlease Wait";
                     for (int i = 0; i < 3; i++)
                     {
                         cout << ".";
                         Sleep(300);
                     }
-                    return;
+                    infile.close();
+                    loginInterface(userId);
+                    
+                    int op;
+                    while (true)
+                    {
+                        cout << "\t\tEnter choice: ";
+                        cin >> op;
+                        if (op == 1)
+                        {
+                            game(userId);
+                            break;
+                        }
+                        else if (op == 2)
+                        {
+                            system("cls");
+                            Sleep(300);
+                            cout << "Please Wait";
+                            for (int i = 0; i < 3; i++)
+                            {
+                                cout << ".";
+                                Sleep(300);
+                            }
+                            return;
+                        }
+                        else
+                        {
+                            cout << "\t\tInvalid choice. Please try again." << endl;
+                        }
+                    }
+                    system("cls");
+                    retry = false;
+                    break;
                 }
-                system("cls");
+            }
+            if (!found)
+            {
+                cout << "\t\tError: Incorrect login Id or Password" << endl;
+                cout << "\t\tDo you want to try again? (y/n): ";
+                char choice;
+                cin >> choice;
+                if (tolower(choice) != 'y')
+                {
+                    retry = false;
+                }
             }
         }
-        if (!found)
-        {
-            cout << "\t\tError: Incorrect login Id or Password" << endl;
-        }
+        infile.close();
     }
-    infile.close();
 }
 
-void game()
-{
-    bool exit = false;
-    while (!exit)
-    {
-        int level;
-        char ch;
 
-    lvl:
-        system("cls");
-        cout << "\t\t************************************************************************" << endl;
-        cout << "\t\t**********  Choose your level of playing the game!!  *******************" << endl;
-        cout << "\t\t************************************************************************" << endl;
-        cout << "\n\t1)Easy \n\n\t 2)Medium \n\n\t 3)Main menu\n"
-             << endl;
-        cin >> level;
-        if (level == 1)
+int highestScore(int newScore, const string &userName)
+{
+    ifstream infile(HIGHEST_SCORE_FILE_PATH);
+    ofstream outfile;
+    unordered_map<string, int> scoreMap;
+    string name;
+    int score;
+    bool found = false;
+
+    // Read the current highest scores into a map
+    if (infile.is_open())
+    {
+        while (infile >> name >> score)
         {
-            cout << "************************************************************************" << endl;
-            cout << "************************ Easy Level Quiz ************************" << endl;
-            cout << "************************************************************************" << endl;
-            Sleep(400);
-            cout << "Please Wait";
-            for (int i = 0; i < 3; i++)
-            {
-                cout << ".";
-                Sleep(400);
-            }
-            easyMath();
+            scoreMap[name] = score;
         }
-        else if (level == 2)
+        infile.close();
+    }
+
+    // Check if the user already has a score
+    if (scoreMap.find(userName) != scoreMap.end())
+    {
+        // Update the score if the new score is higher
+        if (newScore > scoreMap[userName])
         {
-            cout << "************************************************************************" << endl;
-            cout << "************************ Medium Level Quiz ************************" << endl;
-            cout << "************************************************************************" << endl;
-            Sleep(400);
-            cout << "Please Wait";
-            for (int i = 0; i < 3; i++)
-            {
-                cout << ".";
-                Sleep(400);
-            }
-            mediumMath();
+            scoreMap[userName] = newScore;
+            found = true;
         }
-        else if (level == 3)
+    }
+    else
+    {
+        // Add the new user and score
+        scoreMap[userName] = newScore;
+        found = true;
+    }
+
+    // Write the updated scores back to the file only if there are changes
+    if (found)
+    {
+        outfile.open(HIGHEST_SCORE_FILE_PATH);
+        if (outfile.is_open())
         {
-            system("cls");
-            Sleep(400);
-            cout << "Returning to Main menu";
-            for (int i = 0; i < 3; i++)
+            for (const auto &entry : scoreMap)
             {
-                cout << ".";
-                Sleep(400);
+                outfile << entry.first << " " << entry.second << std::endl;
             }
-            exit = true;
+            outfile.close();
         }
         else
         {
-            cout << "You have entered an invalid input. Please choose again!!" << endl;
-            goto lvl;
+            std::cerr << "Error: Cannot open highest score file for writing!" << std::endl;
         }
-
-        cout << endl;
     }
+
+    return newScore;
+}
+
+void displayHighestScores()
+{
+    system("cls");
+    cout << "\t******************************************************" << endl;
+    cout << "\t******************* Highest Scores *******************" << endl;
+
+    ifstream infile(HIGHEST_SCORE_FILE_PATH);
+    if (!infile)
+    {
+        cout << "\t\tError: Cannot open highest score file!" << endl;
+        return;
+    }
+
+    string name;
+    int score;
+    while (infile >> name >> score)
+    {
+        cout << "\t\t" << name << ": " << score << endl;
+    }
+    infile.close();
+
+    cout << "\t******************************************************" << endl;
+    system("pause");
 }
 
 int main()
 {
-
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED |
-                                                                 FOREGROUND_GREEN |
-                                                                 FOREGROUND_INTENSITY |
-                                                                 BACKGROUND_BLUE);
+                                                                FOREGROUND_GREEN |
+                                                                FOREGROUND_INTENSITY |
+                                                                BACKGROUND_RED);
 
     Login log;
-
     bool exit = false;
+
     while (!exit)
     {
-        // clear terminal
         system("cls");
-        // current date/time based on current system
-        time_t now = time(0);
 
-        // convert now to string form
+        time_t now = time(0);
         char *dt = ctime(&now);
 
+
+
+
+
         cout << "\t******************************************************" << endl;
-        cout << "\t      Local Date and Time: " << dt << endl
-             << endl;
+        cout << "\t      Local Date and Time: " << dt << endl;
+        cout << "\t******************************************************" << endl;
+        cout << "\t\tWelcome to Quiz game Made by Group 4\t" << endl;
+        cout << "\t******************************************************" << endl;
+        cout << "\t\t1. Register\t" << endl;
+        cout << "\t\t2. Log In\t" << endl;
+        cout << "\t\t3. Show Highest Scores\t" << endl;
+        cout << "\t\t4. Exit\t" << endl;
+
+
+
+
 
         int val;
-        cout << "\t******************************************************\t" << endl;
-        cout << "\t\tWelcome to Quiz game Made by Group 4\t" << endl;
-        cout << "\t******************************************************\t" << endl;
-        cout << "\t\t1.Register\t" << endl;
-        cout << "\t\t2.Log In\t" << endl;
-        cout << "\t\t3.Exit\t" << endl;
-
         cout << "\t\tEnter Choice: ";
         cin >> val;
+
         if (val == 1)
         {
             registration(log);
@@ -410,6 +598,10 @@ int main()
             login();
         }
         else if (val == 3)
+        {
+            displayHighestScores();
+        }
+        else if (val == 4)
         {
             system("cls");
             exit = true;

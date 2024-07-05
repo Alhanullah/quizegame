@@ -1,0 +1,97 @@
+
+// int easyMath()
+// {
+//     system("cls");
+//     int ans[5], skipCount = 0, ansCount = 0, correctAns = 0;
+//     int answer[5] = {1600, 779, 69, 1010, 121};
+//     string ques[5] = {
+//         "Q1) 40x40=___?", "Q2) 999-33-87-100=___?", "Q3) What is 22+47?",
+//         "Q4) 100*10+(20-10)=___?", "Q5) 120+240+400-240-400+1=___?"};
+
+//     cout << "\n**************** Welcome To Math Quiz ****************" << endl;
+//     cout << "\t\t:::::: Instructions ::::::" << endl;
+//     cout << "\n\tEnter your answers after the questions asked\n\tYou may skip questions by entering 0." << endl;
+
+//     for (int i = 0; i < 5; i++)
+//     {
+//         cout << "\n\t" << ques[i] << endl;
+//         cin >> ans[i];
+//         if (ans[i] != 0)
+//         {
+//             ansCount++;
+//             if (ans[i] == answer[i])
+//             {
+//                 correctAns++;
+//                 cout << "Correct Answer!" << endl;
+//             }
+//             else
+//             {
+//                 cout << "Wrong Answer!" << endl;
+//                 cout << "Answer = " << answer[i] << endl;
+//             }
+//         }
+//         else
+//         {
+//             skipCount++;
+//             cout << "Answer = " << answer[i] << endl;
+//         }
+//     }
+//     system("cls");
+//     cout << "Total no. of questions asked = 5." << endl;
+//     cout << "You have answered " << correctAns << " correctly!" << endl;
+//     cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
+//     cout << "You have skipped " << skipCount << " questions.\n" << endl;
+
+//     system("pause");
+//     return correctAns;
+// }
+
+
+
+int mediumMath()
+{
+    system("cls");
+    string ans[5];
+    int skipCount = 0, ansCount = 0, correctAns = 0;
+    string answer[5] = {"camel", "26", "lion", "dhaka", "7"};
+    string ques[5] = {
+        "Q1) Which animal is known as the 'Ship of the Desert'?", "Q2) How many letters are there in the English alphabet", "Q3) Which animal is known as the king of the jungle",
+        "Q4) What is the capital of Bangladesh?", "Q5) How many continents are there in the world?"};
+
+    cout << "\n**************** Welcome To General Knowledge ****************" << endl;
+    cout << "\t\t:::::: Instructions ::::::" << endl;
+    cout << "\n\tEnter your answers after the questions asked, Answer the questions in small letters.\n\tYou may skip questions by entering 0." << endl;
+
+    for (int i = 0; i < 5; i++)
+    {
+        cout << ques[i] << endl;
+        cin >> ans[i];
+        if (ans[i] != "0")
+        {
+            ansCount++;
+            if (ans[i] == answer[i])
+            {
+                correctAns++;
+                cout << "Correct Answer!" << endl;
+            }
+            else
+            {
+                cout << "Wrong Answer!" << endl;
+                cout << "Answer = " << answer[i] << endl;
+            }
+        }
+        else
+        {
+            skipCount++;
+            cout << "Answer = " << answer[i] << endl;
+        }
+    }
+    system("cls");
+    cout << "Total no. of questions asked = 5." << endl;
+    cout << "You have answered " << correctAns << " correctly!" << endl;
+    cout << "You have given " << (5 - correctAns - skipCount) << " wrong answers." << endl;
+    cout << "You have skipped " << skipCount << " questions.\n" << endl;
+
+    system("pause");
+    return correctAns;
+}
